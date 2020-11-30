@@ -1,4 +1,4 @@
-package person
+package svc
 
 // Person is potential Soylent Green
 type Person struct {
