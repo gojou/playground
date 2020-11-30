@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/gojou/pkg/svc/person"
+)
 
 func main() {
 	fmt.Printf("%v\n", "Hello World!")
