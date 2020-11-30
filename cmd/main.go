@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/gojou/pkg/svc/person"
+
+	"github.com/gojou/playground/pkg/person"
 )
 
 func main() {
 	fmt.Printf("%v\n", "Hello World!")
-	var persons []Person
+	var persons []person.Person
 
 	persons = append(persons, Person{"Mark", "Poling"})
 	persons = append(persons, Person{"Liz", "Poling-Hiraldo"})
