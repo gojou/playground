@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	person "github.com/gojou/playground/pkg/svc"
+	"github.com/gojou/playground/pkg/svc/person"
 )
 
 func main() {
