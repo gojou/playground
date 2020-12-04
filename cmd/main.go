@@ -1,13 +1,37 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 
 	"github.com/gojou/playground/pkg/svc/person"
 	"github.com/gojou/playground/pkg/svc/scout"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
+
+	// Set client options
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
+
 	fmt.Printf("%v\n", "Hello guys!")
 	var persons []person.Person
 
@@ -20,6 +44,13 @@ func main() {
 	scouts = append(scouts, scout.Scout{
 		Firstname: "Aden",
 		Lastname:  "Poling",
+		Den:       4,
+		Rank:      "Senior Webelo",
+	})
+
+	scouts = append(scouts, scout.Scout{
+		Firstname: "Hunter",
+		Lastname:  "Skdz",
 		Den:       4,
 		Rank:      "Senior Webelo",
 	})

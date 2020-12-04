@@ -2,8 +2,9 @@ package scout
 
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
+// Scout defines scout
 type Scout struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Lastname  string             `bson:"lastname,omitempty" json:"lastname,omitempty"`
 	Firstname string             `bson:"firstname,omitempty" json:"firstname,omitempty"`
 	Rank      string             `bson:"rank,omitempty" json:"rank,omitempty"`
