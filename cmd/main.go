@@ -1,36 +1,18 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
+	"net/http"
+	"os"
 
+	"github.com/gojou/playground/cmd/routing"
 	"github.com/gojou/playground/pkg/svc/person"
 	"github.com/gojou/playground/pkg/svc/scout"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-
-	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
-
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Connected to MongoDB!")
 
 	fmt.Printf("%v\n", "Hello guys!")
 	var persons []person.Person
@@ -62,5 +44,22 @@ func main() {
 	for _, s := range scouts {
 		fmt.Printf("%v\n", s.GetScoutBasics())
 	}
+	e := run()
+	if e != nil {
+		log.Fatal(e)
+	}
 
+}
+func run() (e error) {
+	r := mux.NewRouter()
+	routing.Routes(r)
+
+	// Critical to work on AppEngine
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), r))
+	return e
 }
