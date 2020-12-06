@@ -61,5 +61,4 @@ func Scouts(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(scouts)
 
-	fmt.Fprintln(w, "Scouts are..")
 }
