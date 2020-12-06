@@ -16,6 +16,19 @@ import (
 
 // Scouts displays full list of Scouts
 func Scouts(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Add("content-type", "application/json")
+	scouts, err := getScouts()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message: "` + err.Error() + `"}"`))
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode(scouts)
+
+}
+
+func getClient() mongo.Client {
 	// Set client options
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
@@ -34,18 +47,19 @@ func Scouts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("Connected to MongoDB!")
+	return *client
+}
 
-	w.Header().Add("content-type", "application/json")
-
+func getScouts() ([]scout.Scout, error) {
 	var scouts []scout.Scout
-
+	client := getClient()
 	collection := client.Database("goscouting").Collection("scouts")
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{ "message: "` + err.Error() + `"}"`))
-		return
+		// w.WriteHeader(http.StatusInternalServerError)
+		// w.Write([]byte(`{ "message: "` + err.Error() + `"}"`))
+		return scouts, err
 	}
 
 	defer cursor.Close(ctx)
@@ -55,10 +69,9 @@ func Scouts(w http.ResponseWriter, r *http.Request) {
 		scouts = append(scouts, scout)
 	}
 	if err := cursor.Err(); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{ "message: "` + err.Error() + `"}"`))
-		return
+
+		return scouts, err
 	}
-	json.NewEncoder(w).Encode(scouts)
+	return scouts, nil
 
 }
