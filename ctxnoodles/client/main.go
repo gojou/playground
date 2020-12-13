@@ -2,16 +2,30 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
 func main() {
 
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	if len(os.Args) < 2 {
+		log.Fatal("Enter something, dammit.")
+	}
+
+	waitseconds, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		log.Fatal("Enter an integer, dammit.")
+	}
+	wait := time.Duration(waitseconds * 1000000000)
+
+	fmt.Println(wait)
+
+	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://localhost:8080", nil)
