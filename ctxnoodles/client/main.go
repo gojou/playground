@@ -1,18 +1,33 @@
 package main
 
 import (
+	"context"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 func main() {
-	res, err := http.Get("http://localhost:8080")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://localhost:8080", nil)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	req = req.WithContext(ctx)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	defer res.Body.Close()
+
 	if res.StatusCode != http.StatusOK {
 		log.Fatal(res.Status)
 	}
