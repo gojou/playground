@@ -15,7 +15,6 @@ func main() {
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://localhost:8080", nil)
-
 	if err != nil {
 		log.Fatal(err)
 	}
