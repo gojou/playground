@@ -4,58 +4,53 @@ import "fmt"
 
 type identity string
 
-type guy struct {
-	name string
-}
-
 func main() {
 
 	var foo interface{}
-	println(foo)
+	fmt.Println(foo)
 
 	foo = 123
-	println(foo)
+	fmt.Println(foo)
 
 	foo = "So sorry"
-	println(foo)
+	fmt.Println(foo)
 
 	// This works. goo is a copy of foo, which was initialized with an empty interface.
 	// goo inherits the structure of foo as well as the value.
 	goo := foo
-	println(goo)
+	fmt.Println(goo)
 	goo = 12
-	println(goo)
+	fmt.Println(goo)
 
 	var hoo string
 	hoo = "Hoo boy"
-	println(hoo)
+	fmt.Println(hoo)
 
-	// hoo = 13    ERROR -- hoo initialized with concrete type string, must be string
-	// println(hoo)
+	// hoo = 13 // COMPILE ERROR -- hoo initialized with concrete type string, must be string
+	// fmt.Println(hoo)
 
-	per := person{
-		firstName: "Mark",
-		lastName:  "Poling",
-		age:       57,
+	myBool := true
+	myInt := 2010
+	myFloat64 := 9.15
+	myString := "Hello World!"
+	myComplex128 := (7 + 7i)
+	myIdentity := identity("br549")
+	myIdentityCast := string(myIdentity)
+	myBytesSized := [5]byte{}
+	myBytesUnsized := []byte{}
+	myMap := map[string]int{"a": 1, "b": 2, "c": 3}
+	myPersonEmpty := person{}
+	myPerson := person{firstName: "Jayne", lastName: "Doe", age: 34}
+	myPersonPointer := &myPerson
+	myChan := make(chan int)
+	myNil := interface{}(nil)
+
+	var mySlice []interface{}
+	mySlice = append(mySlice, myBool, myInt, myFloat64, myString,
+		myComplex128, myIdentity, myIdentityCast, myBytesSized, myBytesUnsized,
+		myMap, myPersonEmpty, myPerson, myPersonPointer, myChan, myNil)
+
+	for _, elem := range mySlice {
+		fmt.Printf("type is: %T -- value is: %v\n", elem, elem)
 	}
-	fmt.Printf("Hello %v\n", per)
-
-	// println(true)
-	// println(2010)
-	// println(9.15)
-	// println(7 + 7i)
-	// println("Hello World!")
-	// println(identity("19520925"))
-	// println([5]byte{})
-	// println([]byte{})
-	// println(map[string]int{})
-	// println(guy{name: "John Doe"})
-	// println(&guy{name: "John Doe"})
-	// println(make(chan int))
-	// println(*new(guy))
-	// println(nil)
-}
-
-func println(x interface{}) {
-	fmt.Printf("type is: %T -- value is: %v\n", x, x)
 }
