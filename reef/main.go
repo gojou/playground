@@ -39,7 +39,7 @@ func main() {
 	myBytesSized := [5]byte{}
 	myBytesUnsized := []byte{}
 	myMap := map[string]int{"a": 1, "b": 2, "c": 3}
-	myPersonEmpty := person{}
+	myPersonEmpty := *new(person)
 	myPerson := person{firstName: "Jayne", lastName: "Doe", age: 34}
 	myPersonPointer := &myPerson
 	myChan := make(chan int)
