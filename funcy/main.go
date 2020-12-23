@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Hello world!")
+	greeting()
 	i := inches(2.0)
 	m := mms(5)
 	fmt.Println(i)
